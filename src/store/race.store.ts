@@ -2,10 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Horse, Race, RaceResult, Session } from '@/types';
 import { useHorseStore } from '@/store/horse.store';
-
-const RACE_DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200];
-const TRACK_LENGTH = 100;
-const BASE_SPEED = 1.5;
+import { BASE_SPEED, RACE_DISTANCES, TRACK_LENGTH } from '@/constants';
 
 const selectRandomHorses = (allHorses: Horse[], count: number): Horse[] => {
   const shuffled = [...allHorses].sort(() => Math.random() - 0.5);
