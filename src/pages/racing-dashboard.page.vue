@@ -96,74 +96,76 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-8 max-w-[1400px] mx-auto">
+  <div class="max-w-[1400px] mx-auto">
     <racing-dashboard-header 
       @click:horse-list="handleOpenHorseList"
       @click:generate-program="handleGenerateProgram"
       @click:start-pause-race="handleStartPauseRace"
     />
     
-    <header class="mb-12">
-      <h1 class="text-[2.5rem] font-bold mb-2">
-        Racing Dashboard
-      </h1>
-      <p class="text-lg text-cool-gray-500">
-        Welcome to the Horse Racing Management System
-      </p>
-    </header>
-
-    <div v-if="isLoading" class="flex justify-center items-center min-h-[400px]">
-      <p>Loading dashboard...</p>
-    </div>
-
-    <div v-else class="flex flex-col gap-8">
-      <div v-if="sessionOptions.length === 0" class="py-16 px-8 bg-cool-gray-50 rounded-lg border-2 border-dashed border-cool-gray-200">
-        <p class="text-cool-gray-600 text-center text-lg">
-          No sessions available. Click "Generate Program" to create sessions.
+    <div class="px-4 md:px-8">
+      <header class="mb-12">
+        <h1 class="text-[2.5rem] font-bold mb-2">
+          Racing Dashboard
+        </h1>
+        <p class="text-lg text-cool-gray-500">
+          Welcome to the Horse Racing Management System
         </p>
+      </header>
+
+      <div v-if="isLoading" class="flex justify-center items-center min-h-[400px]">
+        <p>Loading dashboard...</p>
       </div>
 
-      <div v-else class="flex flex-col gap-6">
-        <div v-if="activeRaceHorses.length > 0" class="flex flex-col gap-8 mb-8">
-          <race-track 
-            :horses="activeRaceHorses"
-            :distance="activeRaceDistance"
-            :is-running="isActiveRaceRunning"
-            :is-paused="isActiveRacePaused"
-            :is-completed="isActiveRaceCompleted"
-          />
-        </div>
-
-        <div v-else class="p-8 bg-amber-50 rounded-lg border-2 border-amber-400 mb-6">
-          <p class="text-amber-700 text-center text-lg font-medium">
-            ⚠️ Click "Start Race" to begin watching races on the track
+      <div v-else class="flex flex-col gap-8">
+        <div v-if="sessionOptions.length === 0" class="py-16 px-8 bg-cool-gray-50 rounded-lg border-2 border-dashed border-cool-gray-200">
+          <p class="text-cool-gray-600 text-center text-lg">
+            No sessions available. Click "Generate Program" to create sessions.
           </p>
         </div>
 
-        <template v-if="currentSessionHorses.length > 0">
-          <div class="bg-white p-6 rounded-lg border border-cool-gray-200">
-            <label class="block text-sm font-medium text-cool-gray-700 mb-2">
-              Select Session
-            </label>
-            <v-select
-              v-model="selectedSessionId"
-              :options="sessionOptions"
-              placeholder="Choose a session"
-              size="md"
+        <div v-else class="flex flex-col gap-6">
+          <div v-if="activeRaceHorses.length > 0" class="flex flex-col gap-8 mb-8">
+            <race-track 
+              :horses="activeRaceHorses"
+              :distance="activeRaceDistance"
+              :is-running="isActiveRaceRunning"
+              :is-paused="isActiveRacePaused"
+              :is-completed="isActiveRaceCompleted"
             />
           </div>
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <session-horses-table
-              :horses="currentSessionHorses"
-              :session-name="currentSessionName"
-            />
-            
-            <session-results-table
-              :results="currentSessionResults"
-              :session-name="currentSessionName"
-            />
+
+          <div v-else class="p-8 bg-amber-50 rounded-lg border-2 border-amber-400 mb-6">
+            <p class="text-amber-700 text-center text-lg font-medium">
+              ⚠️ Click "Start Race" to begin watching races on the track
+            </p>
           </div>
-        </template>
+
+          <template v-if="currentSessionHorses.length > 0">
+            <div class="bg-white p-6 rounded-lg border border-cool-gray-200">
+              <label class="block text-sm font-medium text-cool-gray-700 mb-2">
+                Select Session
+              </label>
+              <v-select
+                v-model="selectedSessionId"
+                :options="sessionOptions"
+                placeholder="Choose a session"
+                size="md"
+              />
+            </div>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <session-horses-table
+                :horses="currentSessionHorses"
+                :session-name="currentSessionName"
+              />
+              
+              <session-results-table
+                :results="currentSessionResults"
+                :session-name="currentSessionName"
+              />
+            </div>
+          </template>
+        </div>
       </div>
     </div>
 

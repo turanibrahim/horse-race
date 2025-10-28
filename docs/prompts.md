@@ -139,4 +139,8 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - Drawer table should have horizontal scroll on mobile when page width not enough
   - Drawer max width should be page width
   - on the desktop max width should be 800px 
+- add mobile menu for desktop items. Menu should be visible only on mobile. Item should be list on the mobile menu
+  - opacity not working on the backdrop. add close button under the menu
+  - shrink padding on the header for mobile
+  - remove negative margins, remove paddings from layout instead
 - 
