@@ -125,7 +125,7 @@ onMounted(async () => {
         </div>
 
         <div v-else class="flex flex-col gap-6">
-          <div v-if="activeRaceHorses.length > 0" class="flex flex-col gap-8 mb-8">
+          <div v-if="activeRaceHorses.length > 0" class="flex flex-col gap-8">
             <race-track 
               :horses="activeRaceHorses"
               :distance="activeRaceDistance"
