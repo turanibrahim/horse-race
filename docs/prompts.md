@@ -146,3 +146,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - ensure that every horse have different color
 - ensure that horse id is unique
   - id could be random number I think
+- Only first horse running on the race right now find the issue and fix it

@@ -167,11 +167,11 @@ export const useRaceStore = defineStore('race', () => {
 
     const elapsed = (timestamp - startTime.value - totalPausedDuration.value) / 1000;
     
-    const allFinished = session.horses.every(horse => 
-      updateHorsePosition({ horse, elapsed }),
-    );
+    session.horses.forEach(horse => {
+      updateHorsePosition({ horse, elapsed });
+    });
 
-    if (allFinished && checkRaceCompletion(session)) {
+    if (checkRaceCompletion(session)) {
       finalizeRaceResults(session);
       return;
     }
