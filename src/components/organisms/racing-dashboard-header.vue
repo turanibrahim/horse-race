@@ -4,6 +4,7 @@ import VButton from '@/components/atoms/v-button.vue';
 const emit = defineEmits<{
   'click:horse-list': []
   'click:generate-program': []
+  'click:start-pause-race': []
 }>();
 
 const handleHorseList = () => {
@@ -15,6 +16,7 @@ const handleGenerateProgram = () => {
 };
 
 const handleStartPauseRace = () => {
+  emit('click:start-pause-race');
 };
 </script>
 

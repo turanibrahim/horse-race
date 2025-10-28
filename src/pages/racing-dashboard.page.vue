@@ -4,8 +4,10 @@ import RacingDashboardHeader from '@/components/organisms/racing-dashboard-heade
 import HorseListDrawer from '@/components/organisms/horse-list-drawer.vue';
 import SessionHorsesTable from '@/components/organisms/session-horses-table.vue';
 import SessionResultsTable from '@/components/organisms/session-results-table.vue';
+import RaceTrack from '@/components/organisms/race-track.vue';
 import VSelect, { type SelectOption } from '@/components/atoms/v-select.vue';
 import { useRaceStore } from '@/store/race.store';
+import type { RaceResult } from '@/types';
 
 const raceStore = useRaceStore();
 
@@ -18,6 +20,14 @@ const handleOpenHorseList = () => {
 
 const handleGenerateProgram = () => {
   raceStore.generateProgram();
+};
+
+const handleStartPauseRace = () => {
+  raceStore.toggleSessionRace();
+};
+
+const handleRaceComplete = (results: RaceResult[]) => {
+  raceStore.completeSession(results);
 };
 
 const sessionOptions = computed<SelectOption<number>[]>(() =>
@@ -54,6 +64,22 @@ const currentSessionName = computed(() =>
   raceStore.currentSession?.name || 'No Session Selected',
 );
 
+const currentSessionDistance = computed(() => 
+  raceStore.currentSession?.distance || 0,
+);
+
+const isSessionRunning = computed(() => 
+  raceStore.currentSession?.isRunning || false,
+);
+
+const isSessionPaused = computed(() => 
+  raceStore.currentSession?.isPaused || false,
+);
+
+const isSessionCompleted = computed(() => 
+  raceStore.currentSession?.isCompleted || false,
+);
+
 onMounted(async () => {
   try {
     isLoading.value = false;
@@ -68,6 +94,7 @@ onMounted(async () => {
     <racing-dashboard-header 
       @click:horse-list="handleOpenHorseList"
       @click:generate-program="handleGenerateProgram"
+      @click:start-pause-race="handleStartPauseRace"
     />
     
     <header class="dashboard-header">
@@ -100,16 +127,27 @@ onMounted(async () => {
           />
         </div>
 
-        <div v-if="currentSessionHorses.length > 0" class="tables-grid">
-          <session-horses-table
+        <div v-if="currentSessionHorses.length > 0" class="race-content">
+          <race-track 
             :horses="currentSessionHorses"
-            :session-name="currentSessionName"
+            :distance="currentSessionDistance"
+            :is-running="isSessionRunning"
+            :is-paused="isSessionPaused"
+            :is-completed="isSessionCompleted"
+            @race:complete="handleRaceComplete"
           />
-          
-          <session-results-table
-            :results="currentSessionResults"
-            :session-name="currentSessionName"
-          />
+
+          <div class="tables-grid">
+            <session-horses-table
+              :horses="currentSessionHorses"
+              :session-name="currentSessionName"
+            />
+            
+            <session-results-table
+              :results="currentSessionResults"
+              :session-name="currentSessionName"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -171,6 +209,12 @@ onMounted(async () => {
   padding: 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
+}
+
+.race-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .tables-grid {

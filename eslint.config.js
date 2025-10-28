@@ -69,6 +69,10 @@ export default tseslint.config(
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
+      globals: {
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+      },
     },
   },
   

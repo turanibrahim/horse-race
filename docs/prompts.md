@@ -112,4 +112,5 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
     - With session I mean races, update the logic based on that. Currently we create races on init but we need to that on user click
   - when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
+  - I want to see actual race on the dashboard when user click to start/pause race button race should happen on the dashboard
   - 

@@ -174,6 +174,59 @@ export const useRaceStore = defineStore('race', () => {
     race.isPaused = false;
   };
 
+  const startSession = () => {
+    const session = currentSession.value;
+    if (!session) return;
+
+    if (session.isCompleted) return;
+
+    session.isRunning = true;
+    session.isPaused = false;
+  };
+
+  const pauseSession = () => {
+    const session = currentSession.value;
+    if (!session) return;
+
+    if (!session.isRunning) return;
+
+    session.isPaused = true;
+  };
+
+  const resumeSession = () => {
+    const session = currentSession.value;
+    if (!session) return;
+
+    if (!session.isRunning) return;
+
+    session.isPaused = false;
+  };
+
+  const toggleSessionRace = () => {
+    const session = currentSession.value;
+    if (!session) return;
+
+    if (session.isCompleted) return;
+
+    if (!session.isRunning) {
+      startSession();
+    } else if (session.isPaused) {
+      resumeSession();
+    } else {
+      pauseSession();
+    }
+  };
+
+  const completeSession = (results: RaceResult[]) => {
+    const session = currentSession.value;
+    if (!session) return;
+
+    session.results = results;
+    session.isCompleted = true;
+    session.isRunning = false;
+    session.isPaused = false;
+  };
+
   return {
     races,
     currentRound,
@@ -190,5 +243,10 @@ export const useRaceStore = defineStore('race', () => {
     startRace,
     pauseRace,
     resumeRace,
+    startSession,
+    pauseSession,
+    resumeSession,
+    toggleSessionRace,
+    completeSession,
   };
 });
