@@ -143,4 +143,6 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - opacity not working on the backdrop. add close button under the menu
   - shrink padding on the header for mobile
   - remove negative margins, remove paddings from layout instead
-- 
+- ensure that every horse have different color
+- ensure that horse id is unique
+  - id could be random number I think
