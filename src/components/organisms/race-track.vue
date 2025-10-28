@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { Horse } from '@/types';
 import VHorse from '@/components/atoms/v-horse.vue';
 import { useRaceStore } from '@/store/race.store';
@@ -17,6 +17,47 @@ const props = defineProps<Props>();
 const raceStore = useRaceStore();
 
 const stableLaneAssignment = computed(() => props.horses);
+
+const HORSE_WIDTH = 50;
+const trackRef = ref<HTMLElement | null>(null);
+const trackWidth = ref<number>(0);
+
+const calculateHorsePosition = (horseId: number): number => {
+  const positionPercentage = raceStore.horsePositions.get(horseId) || 0;
+  
+  if (!trackWidth.value) return 0;
+  
+  const effectiveTrackLength = trackWidth.value - HORSE_WIDTH;
+  const positionInPixels = (positionPercentage / 100) * effectiveTrackLength;
+  
+  return positionInPixels;
+};
+
+const isHorseRunning = (horseId: number): boolean => {
+  if (props.isCompleted || props.isPaused || !props.isRunning) return false;
+  
+  const hasFinished = raceStore.finishedHorses.has(horseId);
+  return !hasFinished;
+};
+
+const updateTrackWidth = () => {
+  if (trackRef.value) {
+    trackWidth.value = trackRef.value.offsetWidth;
+  }
+};
+
+onMounted(() => {
+  updateTrackWidth();
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', updateTrackWidth);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateTrackWidth);
+  }
+});
 </script>
 
 <template>
@@ -53,7 +94,7 @@ const stableLaneAssignment = computed(() => props.horses);
       </div>
     </div>
 
-    <div class="relative w-full bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg overflow-hidden h-[500px]">
+    <div ref="trackRef" class="relative w-full bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg overflow-hidden h-[500px]">
       <div class="absolute inset-0 flex flex-col">
         <div
           v-for="i in 10"
@@ -63,24 +104,24 @@ const stableLaneAssignment = computed(() => props.horses);
         />
       </div>
 
-      <div class="absolute right-[2%] top-0 bottom-0 w-1 bg-[repeating-linear-gradient(45deg,#ffffff,#ffffff_10px,#000000_10px,#000000_20px)] shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
+      <div class="absolute right-0 top-0 bottom-0 w-1 bg-[repeating-linear-gradient(45deg,#ffffff,#ffffff_10px,#000000_10px,#000000_20px)] shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
 
       <div
         v-for="(horse, index) in stableLaneAssignment"
         :key="horse.id"
-        class="absolute left-[2%] right-[2%] h-[10%] flex items-center transition-[top] duration-300"
+        class="absolute h-[10%] flex items-center transition-[top] duration-300"
         :style="{ top: `${index * 10}%` }"
       >
         <div
           class="absolute transition-[left] duration-100 z-10"
           :style="{
-            left: `${raceStore.horsePositions.get(horse.id) || 0}%`,
+            left: `${calculateHorsePosition(horse.id)}px`,
           }"
         >
           <v-horse
             :color="horse.color"
             :number="horse.id"
-            :is-running="isRunning && !isPaused && !isCompleted"
+            :is-running="isHorseRunning(horse.id)"
           />
         </div>
         <div class="absolute -left-[120px] flex flex-col gap-0.5 bg-white/95 p-1 px-2 rounded shadow-[0_2px_4px_rgba(0,0,0,0.2)] min-w-[110px] md:-left-[100px] md:min-w-[90px]">

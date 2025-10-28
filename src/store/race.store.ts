@@ -408,6 +408,7 @@ export const useRaceStore = defineStore('race', () => {
     currentSessionId,
     activeRaceSessionId,
     horsePositions,
+    finishedHorses,
     currentSession,
     activeRaceSession,
     

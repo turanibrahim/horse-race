@@ -72,6 +72,7 @@ export default tseslint.config(
       globals: {
         requestAnimationFrame: 'readonly',
         cancelAnimationFrame: 'readonly',
+        window: 'readonly',
       },
     },
   },
