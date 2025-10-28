@@ -10,7 +10,6 @@ interface HorseTableProps {
 const props = defineProps<HorseTableProps>();
 
 const columns = [
-  { key: 'id', label: 'ID' },
   { key: 'name', label: 'Horse Name' },
   { key: 'color', label: 'Color' },
   { key: 'conditionScore', label: 'Condition Score' },
