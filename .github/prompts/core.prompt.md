@@ -27,3 +27,5 @@ mode: agent
 - create component, logic and functions testable.
 - always use arrow functions.
 - always use alias import paths.
+- pages will be under src/pages/ folder and have [page-name].page.vue convention
+

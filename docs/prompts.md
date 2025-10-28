@@ -78,3 +78,9 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - Horse store have 20 horses you need to choose 10 random horses among them
   - delete comments code should explain itself update code based on that
 - Replace all relative imports with alias import
+- add vue router to project
+  - add pages folder into src
+  - create theme page under pages folder.
+  - move everything under app to that theme page
+  - pages will have [page-name].page.vue convention
+- 
