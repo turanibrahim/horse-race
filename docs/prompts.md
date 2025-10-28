@@ -156,3 +156,5 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - create unit test for plugins
 - add coverage tools to project
 - add playwright and unit tests to project
+- Add correct test cases for e2e
+  - first test case not working
