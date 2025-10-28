@@ -7,7 +7,6 @@ import SessionResultsTable from '@/components/molecules/session-results-table.vu
 import RaceTrack from '@/components/organisms/race-track.vue';
 import VSelect, { type SelectOption } from '@/components/atoms/v-select.vue';
 import { useRaceStore } from '@/store/race.store';
-import type { RaceResult } from '@/types';
 
 const raceStore = useRaceStore();
 
@@ -23,11 +22,11 @@ const handleGenerateProgram = () => {
 };
 
 const handleStartPauseRace = () => {
-  raceStore.toggleSessionRace();
-};
-
-const handleRaceComplete = (results: RaceResult[]) => {
-  raceStore.completeSession(results);
+  if (raceStore.activeRaceSessionId) {
+    raceStore.toggleSessionRace();
+  } else {
+    raceStore.startAllRaces();
+  }
 };
 
 const sessionOptions = computed<SelectOption<number>[]>(() =>
@@ -64,20 +63,27 @@ const currentSessionName = computed(() =>
   raceStore.currentSession?.name || 'No Session Selected',
 );
 
-const currentSessionDistance = computed(() => 
-  raceStore.currentSession?.distance || 0,
+const activeRaceHorses = computed(() => {
+  const session = raceStore.activeRaceSession;
+  if (!session) return [];
+  
+  return session.horses;
+});
+
+const activeRaceDistance = computed(() => 
+  raceStore.activeRaceSession?.distance || 0,
 );
 
-const isSessionRunning = computed(() => 
-  raceStore.currentSession?.isRunning || false,
+const isActiveRaceRunning = computed(() => 
+  raceStore.activeRaceSession?.isRunning || false,
 );
 
-const isSessionPaused = computed(() => 
-  raceStore.currentSession?.isPaused || false,
+const isActiveRacePaused = computed(() => 
+  raceStore.activeRaceSession?.isPaused || false,
 );
 
-const isSessionCompleted = computed(() => 
-  raceStore.currentSession?.isCompleted || false,
+const isActiveRaceCompleted = computed(() => 
+  raceStore.activeRaceSession?.isCompleted || false,
 );
 
 onMounted(async () => {
@@ -114,29 +120,35 @@ onMounted(async () => {
       </div>
 
       <div v-else class="sessions-container">
-        <div class="session-selector mb-6">
-          <label class="block text-sm font-medium text-cool-gray-700 mb-2">
-            Select Session
-          </label>
-          <v-select
-            v-model="selectedSessionId"
-            :options="sessionOptions"
-            placeholder="Choose a session"
-            size="md"
-            class="max-w-md"
+        <div v-if="activeRaceHorses.length > 0" class="race-content">
+          <race-track 
+            :horses="activeRaceHorses"
+            :distance="activeRaceDistance"
+            :is-running="isActiveRaceRunning"
+            :is-paused="isActiveRacePaused"
+            :is-completed="isActiveRaceCompleted"
           />
         </div>
 
-        <div v-if="currentSessionHorses.length > 0" class="race-content">
-          <race-track 
-            :horses="currentSessionHorses"
-            :distance="currentSessionDistance"
-            :is-running="isSessionRunning"
-            :is-paused="isSessionPaused"
-            :is-completed="isSessionCompleted"
-            @race:complete="handleRaceComplete"
-          />
+        <div v-else class="race-warning">
+          <p class="text-amber-700 text-center text-lg font-medium">
+            ⚠️ Click "Start Race" to begin watching races on the track
+          </p>
+        </div>
 
+        <template v-if="currentSessionHorses.length > 0">
+          <div class="session-selector">
+            <label class="block text-sm font-medium text-cool-gray-700 mb-2">
+              Select Session
+            </label>
+            <v-select
+              v-model="selectedSessionId"
+              :options="sessionOptions"
+              placeholder="Choose a session"
+              size="md"
+              class="max-w-md"
+            />
+          </div>
           <div class="tables-grid">
             <session-horses-table
               :horses="currentSessionHorses"
@@ -148,7 +160,7 @@ onMounted(async () => {
               :session-name="currentSessionName"
             />
           </div>
-        </div>
+        </template>
       </div>
     </div>
 
@@ -215,6 +227,15 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.race-warning {
+  padding: 2rem;
+  background-color: #fffbeb;
+  border-radius: 0.5rem;
+  border: 2px solid #fbbf24;
+  margin-bottom: 1.5rem;
 }
 
 .tables-grid {

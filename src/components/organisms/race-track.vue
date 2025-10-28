@@ -1,8 +1,8 @@
 <script setup lang="ts">
-/* eslint-env browser */
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, onUnmounted, watch } from 'vue';
 import type { Horse } from '@/types';
 import VHorse from '@/components/atoms/v-horse.vue';
+import { useRaceStore } from '@/store/race.store';
 
 interface Props {
   horses: Horse[];
@@ -14,133 +14,26 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
-  'race:complete': [results: { horseId: number; horseName: string; finishTime: number; position: number }[]];
-}>();
+const raceStore = useRaceStore();
 
-const TRACK_LENGTH = 100;
-const BASE_SPEED = 1.5;
-const horsePositions = ref<Map<number, number>>(new Map());
-const startTime = ref<number>(0);
-const pausedTime = ref<number>(0);
-const totalPausedDuration = ref<number>(0);
-const animationFrameId = ref<number | null>(null);
-const finishedHorses = ref<Set<number>>(new Set());
-const horseFinishTimes = ref<Map<number, number>>(new Map());
-
-const horseSpeedFactors = computed(() => {
-  const factors = new Map<number, number>();
-  props.horses.forEach(horse => {
-    const baseVariation = 0.85 + Math.random() * 0.3;
-    const conditionFactor = horse.conditionScore / 100;
-    const speedFactor = baseVariation * (0.8 + conditionFactor * 0.4);
-    factors.set(horse.id, speedFactor);
-  });
-  return factors;
-});
-
-const stableLaneAssignment = ref<Horse[]>([]);
-
-const initializeRace = () => {
-  horsePositions.value.clear();
-  finishedHorses.value.clear();
-  horseFinishTimes.value.clear();
-  props.horses.forEach(horse => {
-    horsePositions.value.set(horse.id, 0);
-  });
-  startTime.value = 0;
-  pausedTime.value = 0;
-  totalPausedDuration.value = 0;
-  
-  if (stableLaneAssignment.value.length === 0) {
-    stableLaneAssignment.value = [...props.horses];
-  }
-};
-
-const animate = (timestamp: number) => {
-  if (!startTime.value) {
-    startTime.value = timestamp;
-  }
-
-  if (props.isPaused) {
-    if (!pausedTime.value) {
-      pausedTime.value = timestamp;
-    }
-    animationFrameId.value = requestAnimationFrame(animate);
-    return;
-  }
-
-  if (pausedTime.value) {
-    totalPausedDuration.value += timestamp - pausedTime.value;
-    pausedTime.value = 0;
-  }
-
-  const elapsed = (timestamp - startTime.value - totalPausedDuration.value) / 1000;
-
-  let allFinished = true;
-
-  props.horses.forEach(horse => {
-    if (finishedHorses.value.has(horse.id)) return;
-
-    const speedFactor = horseSpeedFactors.value.get(horse.id) || 1;
-    const speed = BASE_SPEED * speedFactor;
-    const newPosition = Math.min(speed * elapsed, TRACK_LENGTH);
-
-    horsePositions.value.set(horse.id, newPosition);
-
-    if (newPosition >= TRACK_LENGTH && !finishedHorses.value.has(horse.id)) {
-      finishedHorses.value.add(horse.id);
-      horseFinishTimes.value.set(horse.id, elapsed);
-    }
-
-    if (newPosition < TRACK_LENGTH) {
-      allFinished = false;
-    }
-  });
-
-  if (allFinished && finishedHorses.value.size === props.horses.length) {
-    const results = props.horses.map(horse => ({
-      horseId: horse.id,
-      horseName: horse.name,
-      finishTime: horseFinishTimes.value.get(horse.id) || 0,
-      position: 0,
-    }));
-
-    results.sort((a, b) => a.finishTime - b.finishTime);
-    results.forEach((result, index) => {
-      result.position = index + 1;
-    });
-
-    emit('race:complete', results);
-    return;
-  }
-
-  animationFrameId.value = requestAnimationFrame(animate);
-};
+const stableLaneAssignment = computed(() => props.horses);
 
 watch(() => props.isRunning, (running) => {
   if (running && !props.isCompleted) {
-    if (horsePositions.value.size === 0) {
-      initializeRace();
-    }
-    if (!animationFrameId.value) {
-      animationFrameId.value = requestAnimationFrame(animate);
-    }
-  } else if (!running && animationFrameId.value) {
-    cancelAnimationFrame(animationFrameId.value);
-    animationFrameId.value = null;
+    raceStore.startSession();
   }
 });
 
-watch(() => props.horses, () => {
-  initializeRace();
-  stableLaneAssignment.value = [...props.horses];
-}, { immediate: true });
+watch(() => props.isPaused, (paused) => {
+  if (paused) {
+    raceStore.pauseSession();
+  } else if (props.isRunning && !props.isCompleted) {
+    raceStore.resumeSession();
+  }
+});
 
 onUnmounted(() => {
-  if (animationFrameId.value) {
-    cancelAnimationFrame(animationFrameId.value);
-  }
+  raceStore.pauseSession();
 });
 </script>
 
@@ -198,7 +91,7 @@ onUnmounted(() => {
         <div
           class="horse-wrapper"
           :style="{
-            left: `${horsePositions.get(horse.id) || 0}%`,
+            left: `${raceStore.horsePositions.get(horse.id) || 0}%`,
           }"
         >
           <v-horse

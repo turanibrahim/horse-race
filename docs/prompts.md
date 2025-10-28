@@ -123,3 +123,12 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - horse list table and session horses table should be identical. Make it horse-table and use it both
   - horse table should be molecule instead of organism
   - session results and racing-dashboard-header also molecule
+- 
+  ```
+    - race track will always show active running race
+    - when use change session with select it should only change result and session horses table
+    - when user start race all the races should run sequencally.
+    - user should able to see results on the bottom and able change sessions with select
+  ```
+  - Put warning for user that says you should start race to see race track
+- 

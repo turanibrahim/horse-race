@@ -4,6 +4,8 @@ import type { Horse, Race, RaceResult, Session } from '@/types';
 import { useHorseStore } from '@/store/horse.store';
 
 const RACE_DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200];
+const TRACK_LENGTH = 100;
+const BASE_SPEED = 1.5;
 
 const selectRandomHorses = (allHorses: Horse[], count: number): Horse[] => {
   const shuffled = [...allHorses].sort(() => Math.random() - 0.5);
@@ -28,10 +30,117 @@ export const useRaceStore = defineStore('race', () => {
   const currentRound = ref<number>(1);
   const sessions = ref<Session[]>([]);
   const currentSessionId = ref<number | null>(null);
+  const activeRaceSessionId = ref<number | null>(null);
+  
+  const horsePositions = ref<Map<number, number>>(new Map());
+  const startTime = ref<number>(0);
+  const pausedTime = ref<number>(0);
+  const totalPausedDuration = ref<number>(0);
+  const animationFrameId = ref<number | null>(null);
+  const finishedHorses = ref<Set<number>>(new Set());
+  const horseFinishTimes = ref<Map<number, number>>(new Map());
+  const horseSpeedFactors = ref<Map<number, number>>(new Map());
 
   const currentSession = computed(() => 
     sessions.value.find(s => s.id === currentSessionId.value),
   );
+
+  const activeRaceSession = computed(() => 
+    sessions.value.find(s => s.id === activeRaceSessionId.value),
+  );
+
+  const initializeHorseSpeedFactors = (horses: Horse[]) => {
+    horseSpeedFactors.value.clear();
+    horses.forEach(horse => {
+      const baseVariation = 0.85 + Math.random() * 0.3;
+      const conditionFactor = horse.conditionScore / 100;
+      const speedFactor = baseVariation * (0.8 + conditionFactor * 0.4);
+      horseSpeedFactors.value.set(horse.id, speedFactor);
+    });
+  };
+
+  const initializeRaceAnimation = (horses: Horse[]) => {
+    horsePositions.value.clear();
+    finishedHorses.value.clear();
+    horseFinishTimes.value.clear();
+    horses.forEach(horse => {
+      horsePositions.value.set(horse.id, 0);
+    });
+    startTime.value = 0;
+    pausedTime.value = 0;
+    totalPausedDuration.value = 0;
+    initializeHorseSpeedFactors(horses);
+  };
+
+  const animate = (timestamp: number) => {
+    const session = activeRaceSession.value;
+    if (!session) return;
+
+    if (!startTime.value) {
+      startTime.value = timestamp;
+    }
+
+    if (session.isPaused) {
+      if (!pausedTime.value) {
+        pausedTime.value = timestamp;
+      }
+      animationFrameId.value = requestAnimationFrame(animate);
+      return;
+    }
+
+    if (pausedTime.value) {
+      totalPausedDuration.value += timestamp - pausedTime.value;
+      pausedTime.value = 0;
+    }
+
+    const elapsed = (timestamp - startTime.value - totalPausedDuration.value) / 1000;
+    let allFinished = true;
+
+    session.horses.forEach(horse => {
+      if (finishedHorses.value.has(horse.id)) return;
+
+      const speedFactor = horseSpeedFactors.value.get(horse.id) || 1;
+      const speed = BASE_SPEED * speedFactor;
+      const newPosition = Math.min(speed * elapsed, TRACK_LENGTH);
+
+      horsePositions.value.set(horse.id, newPosition);
+
+      if (newPosition >= TRACK_LENGTH && !finishedHorses.value.has(horse.id)) {
+        finishedHorses.value.add(horse.id);
+        horseFinishTimes.value.set(horse.id, elapsed);
+      }
+
+      if (newPosition < TRACK_LENGTH) {
+        allFinished = false;
+      }
+    });
+
+    if (allFinished && finishedHorses.value.size === session.horses.length) {
+      const results = session.horses.map(horse => ({
+        horseId: horse.id,
+        horseName: horse.name,
+        finishTime: horseFinishTimes.value.get(horse.id) || 0,
+        position: 0,
+      }));
+
+      results.sort((a, b) => a.finishTime - b.finishTime);
+      results.forEach((result, index) => {
+        result.position = index + 1;
+      });
+
+      completeActiveRaceSession(results);
+      return;
+    }
+
+    animationFrameId.value = requestAnimationFrame(animate);
+  };
+
+  const stopAnimation = () => {
+    if (animationFrameId.value) {
+      cancelAnimationFrame(animationFrameId.value);
+      animationFrameId.value = null;
+    }
+  };
 
   const generateProgram = () => {
     const newSessions: Session[] = [];
@@ -58,10 +167,6 @@ export const useRaceStore = defineStore('race', () => {
     if (!currentSessionId.value && newSessions.length > 0) {
       currentSessionId.value = newSessions[0]!.id;
     }
-  };
-
-  const setCurrentSession = (sessionId: number) => {
-    currentSessionId.value = sessionId;
   };
 
   const calculateFinishTime = (horse: Horse, distance: number): number => {
@@ -175,17 +280,25 @@ export const useRaceStore = defineStore('race', () => {
   };
 
   const startSession = () => {
-    const session = currentSession.value;
+    const session = activeRaceSession.value;
     if (!session) return;
 
     if (session.isCompleted) return;
 
     session.isRunning = true;
     session.isPaused = false;
+
+    if (horsePositions.value.size === 0) {
+      initializeRaceAnimation(session.horses);
+    }
+    
+    if (!animationFrameId.value) {
+      animationFrameId.value = requestAnimationFrame(animate);
+    }
   };
 
   const pauseSession = () => {
-    const session = currentSession.value;
+    const session = activeRaceSession.value;
     if (!session) return;
 
     if (!session.isRunning) return;
@@ -194,7 +307,7 @@ export const useRaceStore = defineStore('race', () => {
   };
 
   const resumeSession = () => {
-    const session = currentSession.value;
+    const session = activeRaceSession.value;
     if (!session) return;
 
     if (!session.isRunning) return;
@@ -203,7 +316,7 @@ export const useRaceStore = defineStore('race', () => {
   };
 
   const toggleSessionRace = () => {
-    const session = currentSession.value;
+    const session = activeRaceSession.value;
     if (!session) return;
 
     if (session.isCompleted) return;
@@ -217,6 +330,31 @@ export const useRaceStore = defineStore('race', () => {
     }
   };
 
+  const completeActiveRaceSession = (results: RaceResult[]) => {
+    const session = activeRaceSession.value;
+    if (!session) return;
+
+    session.results = results;
+    session.isCompleted = true;
+    session.isRunning = false;
+    session.isPaused = false;
+    stopAnimation();
+
+    const nextSession = sessions.value.find(
+      s => !s.isCompleted && s.id !== session.id,
+    );
+    
+    if (nextSession) {
+      activeRaceSessionId.value = nextSession.id;
+      initializeRaceAnimation(nextSession.horses);
+      nextSession.isRunning = true;
+      nextSession.isPaused = false;
+      animationFrameId.value = requestAnimationFrame(animate);
+    } else {
+      activeRaceSessionId.value = null;
+    }
+  };
+
   const completeSession = (results: RaceResult[]) => {
     const session = currentSession.value;
     if (!session) return;
@@ -225,6 +363,21 @@ export const useRaceStore = defineStore('race', () => {
     session.isCompleted = true;
     session.isRunning = false;
     session.isPaused = false;
+    stopAnimation();
+  };
+
+  const setCurrentSession = (sessionId: number) => {
+    currentSessionId.value = sessionId;
+  };
+
+  const startAllRaces = () => {
+    const firstUncompletedSession = sessions.value.find(s => !s.isCompleted);
+    if (!firstUncompletedSession) return;
+
+    stopAnimation();
+    activeRaceSessionId.value = firstUncompletedSession.id;
+    initializeRaceAnimation(firstUncompletedSession.horses);
+    startSession();
   };
 
   return {
@@ -233,6 +386,9 @@ export const useRaceStore = defineStore('race', () => {
     sessions,
     currentSessionId,
     currentSession,
+    activeRaceSessionId,
+    activeRaceSession,
+    horsePositions,
     generateProgram,
     setCurrentSession,
     runRace,
@@ -248,5 +404,6 @@ export const useRaceStore = defineStore('race', () => {
     resumeSession,
     toggleSessionRace,
     completeSession,
+    startAllRaces,
   };
 });
