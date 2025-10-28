@@ -63,3 +63,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - don't use any comment code should explain itself
   - create generateHorse function and create horse inside of it
   - use arrow functions
+- update files names inside project based on prompt
