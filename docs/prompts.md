@@ -94,3 +94,18 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - update router config racing-dashboard will be main page theme will be under theme route
 - add header to racing dashboard page. This header will have 3 buttons one one the left named Horse List, two button on the right named Generate Program and Start Pause Race
   - use v-button and tailwind classes on the header component
+- add header to racing dashboard page. This header will have 3 buttons one one the left named Horse List, two button on the right named Generate Program and Start Pause Race
+  - use v-button and tailwind classes on the header component
+  - 
+    ```
+    - create drawer includes horses table. Horse name will be same color with horse. Add condition as a column
+    - Use drawer inside the dasboard
+    - When user click `handleHorseList` show drawer
+    ```
+  - emit convention will be [modifier]:[event-name] like update:model-value, click:item
+  - 
+    ```
+    - use condition score as a number
+    - put drawer on the left of the screen
+    ```
+  - 

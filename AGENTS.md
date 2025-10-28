@@ -28,4 +28,5 @@ mode: agent
 - always use arrow functions.
 - always use alias import paths.
 - pages will be under src/pages/ folder and have [page-name].page.vue convention
+- emit convention will be [modifier]:[event-name] like update:model-value, click:item
 

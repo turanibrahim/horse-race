@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import VButton from '@/components/atoms/v-button.vue';
 
+const emit = defineEmits<{
+  'click:horse-list': []
+}>();
+
 const handleHorseList = () => {
+  emit('click:horse-list');
 };
 
 const handleGenerateProgram = () => {

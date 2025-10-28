@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import RacingDashboardHeader from '@/components/organisms/racing-dashboard-header.vue';
+import HorseListDrawer from '@/components/organisms/horse-list-drawer.vue';
 
 const isLoading = ref(true);
+const isHorseListDrawerOpen = ref(false);
+
+const handleOpenHorseList = () => {
+  isHorseListDrawerOpen.value = true;
+};
 
 onMounted(async () => {
   try {
@@ -15,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <div class="racing-dashboard">
-    <racing-dashboard-header />
+    <racing-dashboard-header @click:horse-list="handleOpenHorseList" />
     
     <header class="dashboard-header">
       <h1>Racing Dashboard</h1>
@@ -42,6 +48,8 @@ onMounted(async () => {
         <p>Recent race results will appear here</p>
       </section>
     </div>
+
+    <horse-list-drawer v-model="isHorseListDrawerOpen" />
   </div>
 </template>
 
