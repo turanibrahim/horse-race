@@ -151,3 +151,7 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - Animation should stop when horse finish the race
 - instead of id show horse name beggining of the race tract. Delete id from top of the horse. Opacity should 0.5 for the name
 - add vitest to project
+- Write unit test every possible component function
+  - add unit test for pinia
+  - create unit test for plugins
+- 
