@@ -159,3 +159,8 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - Add correct test cases for e2e
   - first test case not working
 - Document this project under docs/ folder
+- 
+  ```
+    src/main.ts(3,17): error TS2307: Cannot find module '@/app.vue' or its corresponding type declarations.
+    I got this error ci why is that?
+  ```
