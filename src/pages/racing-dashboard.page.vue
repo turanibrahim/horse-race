@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import RacingDashboardHeader from '@/components/organisms/racing-dashboard-header.vue';
 import HorseListDrawer from '@/components/organisms/horse-list-drawer.vue';
 import SessionHorsesTable from '@/components/organisms/session-horses-table.vue';
+import SessionResultsTable from '@/components/organisms/session-results-table.vue';
 import VSelect, { type SelectOption } from '@/components/atoms/v-select.vue';
 import { useRaceStore } from '@/store/race.store';
 
@@ -40,6 +41,13 @@ const currentSessionHorses = computed(() => {
   if (!session) return [];
   
   return session.horses;
+});
+
+const currentSessionResults = computed(() => {
+  const session = raceStore.currentSession;
+  if (!session) return [];
+  
+  return session.results;
 });
 
 const currentSessionName = computed(() => 
@@ -92,11 +100,17 @@ onMounted(async () => {
           />
         </div>
 
-        <session-horses-table
-          v-if="currentSessionHorses.length > 0"
-          :horses="currentSessionHorses"
-          :session-name="currentSessionName"
-        />
+        <div v-if="currentSessionHorses.length > 0" class="tables-grid">
+          <session-horses-table
+            :horses="currentSessionHorses"
+            :session-name="currentSessionName"
+          />
+          
+          <session-results-table
+            :results="currentSessionResults"
+            :session-name="currentSessionName"
+          />
+        </div>
       </div>
     </div>
 
@@ -157,5 +171,17 @@ onMounted(async () => {
   padding: 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
