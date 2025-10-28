@@ -67,7 +67,7 @@ const sizeClasses = computed(() => {
       >
         <span
           :class="[
-            'block truncate',
+            'block truncate mr-4',
             !selectedOption && 'text-cool-gray-400'
           ]"
         >
@@ -96,7 +96,7 @@ const sizeClasses = computed(() => {
         leave-to-class="opacity-0"
       >
         <listbox-options
-          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm"
+          class="absolute z-10 mt-1 max-h-60 w-auto overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm top-full"
         >
           <listbox-option
             v-for="option in options"

@@ -150,7 +150,6 @@ onMounted(async () => {
               :options="sessionOptions"
               placeholder="Choose a session"
               size="md"
-              class="max-w-md"
             />
           </div>
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">

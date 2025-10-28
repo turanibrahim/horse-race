@@ -60,7 +60,7 @@ const hasResults = computed(() => props.results.length > 0);
 
       <template #cell-finishTime="{ row }">
         <span class="font-mono text-sm font-medium">
-          {{ (row as unknown as RaceResult).finishTime }}s
+          {{ (row as unknown as RaceResult).finishTime.toFixed(2) }}s
         </span>
       </template>
     </v-table>
