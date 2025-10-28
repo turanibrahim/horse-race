@@ -77,3 +77,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - uses horses we generated inside horse store. Don't create new horses on here
   - Horse store have 20 horses you need to choose 10 random horses among them
   - delete comments code should explain itself update code based on that
+- Replace all relative imports with alias import

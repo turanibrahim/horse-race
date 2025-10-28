@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { Horse, Race, RaceResult } from '@/types';
-import { useHorseStore } from './horse.store';
+import { useHorseStore } from '@/store/horse.store';
 
 const RACE_DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200];
 

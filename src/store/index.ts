@@ -1,2 +1,2 @@
-export { useHorseStore } from './horse.store';
-export { useRaceStore } from './race.store';
+export { useHorseStore } from '@/store/horse.store';
+export { useRaceStore } from '@/store/race.store';
