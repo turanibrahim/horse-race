@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 export interface VTableColumn {
   key: string
@@ -11,7 +11,7 @@ export interface VTableColumn {
 
 export interface VTableProps {
   columns: VTableColumn[]
-  data: any[]
+  data: Record<string, unknown>[]
   variant?: 'default' | 'striped' | 'bordered'
   size?: 'sm' | 'md' | 'lg'
   hoverable?: boolean
@@ -21,59 +21,60 @@ export interface VTableProps {
 const props = withDefaults(defineProps<VTableProps>(), {
   variant: 'default',
   size: 'md',
-  hoverable: true
-})
+  hoverable: true,
+  class: '',
+});
 
 const emit = defineEmits<{
-  'row-click': [row: any, index: number]
+  'row-click': [row: Record<string, unknown>, index: number]
   'sort': [column: VTableColumn]
-}>()
+}>();
 
 const sizeClasses = computed(() => {
   const sizes = {
     sm: 'text-xs',
     md: 'text-sm',
-    lg: 'text-base'
-  }
-  return sizes[props.size]
-})
+    lg: 'text-base',
+  };
+  return sizes[props.size];
+});
 
 const cellPaddingClasses = computed(() => {
   const paddings = {
     sm: 'px-3 py-2',
     md: 'px-4 py-3',
-    lg: 'px-6 py-4'
-  }
-  return paddings[props.size]
-})
+    lg: 'px-6 py-4',
+  };
+  return paddings[props.size];
+});
 
 const variantClasses = computed(() => {
   const variants = {
     default: '',
     striped: '[&_tbody_tr:nth-child(even)]:bg-cool-gray-50',
-    bordered: 'border border-cool-gray-200'
-  }
-  return variants[props.variant]
-})
+    bordered: 'border border-cool-gray-200',
+  };
+  return variants[props.variant];
+});
 
 const getAlignClass = (align?: string) => {
   const alignments = {
     left: 'text-left',
     center: 'text-center',
-    right: 'text-right'
-  }
-  return alignments[align as keyof typeof alignments] || 'text-left'
-}
+    right: 'text-right',
+  };
+  return alignments[align as keyof typeof alignments] || 'text-left';
+};
 
-const handleRowClick = (row: any, index: number) => {
-  emit('row-click', row, index)
-}
+const handleRowClick = (row: Record<string, unknown>, index: number) => {
+  emit('row-click', row, index);
+};
 
 const handleSort = (column: VTableColumn) => {
   if (column.sortable) {
-    emit('sort', column)
+    emit('sort', column);
   }
-}
+};
 </script>
 
 <template>
@@ -138,7 +139,12 @@ const handleSort = (column: VTableColumn) => {
               'text-cool-gray-900'
             ]"
           >
-            <slot :name="`cell-${column.key}`" :row="row" :value="row[column.key]" :index="index">
+            <slot
+              :name="`cell-${column.key}`"
+              :row="row"
+              :value="row[column.key]"
+              :index="index"
+            >
               {{ row[column.key] }}
             </slot>
           </td>

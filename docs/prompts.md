@@ -84,3 +84,7 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - move everything under app to that theme page
   - pages will have [page-name].page.vue convention
 - Generate v-table component under atoms folder
+- add eslint to the project. It should cover vue recommended best proactices and airbnb ts
+  - i want to use latest eslint version do config based on that
+  - run lit and fix all the issues
+  - Make theme page theme-preview.page.vue instead

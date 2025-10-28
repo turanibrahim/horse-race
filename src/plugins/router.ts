@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import type { App } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import type { App } from 'vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,15 +7,15 @@ const router = createRouter({
     {
       path: '/',
       name: 'theme',
-      component: () => import('@/pages/theme.page.vue')
-    }
-  ]
-})
+      component: () => import('@/pages/theme-preview.page.vue'),
+    },
+  ],
+});
 
 export default {
   install(app: App) {
-    app.use(router)
-  }
-}
+    app.use(router);
+  },
+};
 
-export { router }
+export { router };

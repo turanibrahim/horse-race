@@ -16,7 +16,7 @@ const initializeRaces = (allHorses: Horse[]): Race[] => {
     distance,
     horses: selectRandomHorses(allHorses, 10),
     results: [],
-    isCompleted: false
+    isCompleted: false,
   }));
 };
 
@@ -42,7 +42,7 @@ export const useRaceStore = defineStore('race', () => {
     }
 
     if (race.isCompleted) {
-      console.warn(`Race round ${round} has already been completed`);
+      // Race has already been completed
       return race.results;
     }
 
@@ -50,7 +50,7 @@ export const useRaceStore = defineStore('race', () => {
       horseId: horse.id,
       horseName: horse.name,
       finishTime: calculateFinishTime(horse, race.distance),
-      position: 0
+      position: 0,
     }));
 
     results.sort((a, b) => a.finishTime - b.finishTime);
@@ -93,6 +93,6 @@ export const useRaceStore = defineStore('race', () => {
     runAllRaces,
     resetRaces,
     getRaceResults,
-    getRace
+    getRace,
   };
 });
