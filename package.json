@@ -11,7 +11,9 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:ui": "vitest --ui --coverage"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
@@ -24,6 +26,7 @@
     "@eslint/js": "^9.38.0",
     "@types/node": "^24.6.0",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/coverage-v8": "^4.0.4",
     "@vitest/ui": "^4.0.4",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",

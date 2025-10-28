@@ -154,4 +154,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - Write unit test every possible component function
   - add unit test for pinia
   - create unit test for plugins
-- 
+- add coverage tools to project
