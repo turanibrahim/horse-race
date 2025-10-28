@@ -31,7 +31,7 @@ const handleClose = () => {
   <v-drawer
     v-model="isOpen"
     position="left"
-    width="800px"
+    width="min(100%, 800px)"
     :overlay="true"
     :close-on-overlay-click="true"
   >
@@ -69,7 +69,9 @@ const handleClose = () => {
         </p>
       </div>
 
-      <horse-table :horses="horseStore.horses" />
+      <div class="overflow-x-auto -mx-6 px-6">
+        <horse-table :horses="horseStore.horses" />
+      </div>
     </div>
 
     <template #footer>

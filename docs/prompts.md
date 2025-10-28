@@ -127,7 +127,7 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   ```
     - race track will always show active running race
     - when use change session with select it should only change result and session horses table
-    - when user start race all the races should run sequencally.
+    - when user start race all the races should run sequentially.
     - user should able to see results on the bottom and able change sessions with select
   ```
   - Put warning for user that says you should start race to see race track
@@ -135,4 +135,8 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - race finish time should fixed to 2 digits
 - we don't need to do it here we can do this on the dashboard
 - constants will be under src/constants/ folder. Scan all the constants and move them there
-- refactor race store. Use dry, encapsulation, function composition. I want to understand file easyly when read to to bottom
+- refactor race store. Use dry, encapsulation, function composition. I want to understand file easily when read to to bottom
+- Drawer table should have horizontal scroll on mobile when page width not enough
+  - Drawer max width should be page width
+  - on the desktop max width should be 800px 
+- 
