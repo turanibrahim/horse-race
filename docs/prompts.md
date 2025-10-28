@@ -58,3 +58,8 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - add pinia to project
   - update the store based on the prompt file
   - just init the stores and make config don't create any store or types yet
+- Generate horse store, horse store will have horse list. Horse list will have 20 horses. Create generator function for horses. Every horse will have unique name, color and condition score. Condition score will be 1 to 100.
+  - I see 20 names but 10 colors. Colors should be hex code.
+  - don't use any comment code should explain itself
+  - create generateHorse function and create horse inside of it
+  - use arrow functions

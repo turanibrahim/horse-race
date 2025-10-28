@@ -19,3 +19,10 @@ mode: agent
 - make sure code is well structured and organized.
 - fix any errors, eslint issues.
 - use conventional commit messages.
+- all the file names will be kebab case that includes vue files too.
+- store names will have [store-name].store.ts pattern.
+- test names will be [component-name].spec.ts pattern. Tests will be under __tests__ folder under /src/ folder.
+- use vitest for testing.
+- don't create unit test until I say so.
+- create component, logic and functions testable.
+- always use arrow functions.
