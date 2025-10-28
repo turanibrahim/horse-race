@@ -51,4 +51,8 @@ This document contains a list of prompts used for various tasks. Prompt list wil
     $gradient-top-left: linear-gradient(225deg, #cae7b9ff, #f3de8aff, #eb9486ff, #7e7f9aff, #97a7b3ff);
     $gradient-bottom-left: linear-gradient(315deg, #cae7b9ff, #f3de8aff, #eb9486ff, #7e7f9aff, #97a7b3ff);
     $gradient-radial: radial-gradient(#cae7b9ff, #f3de8aff, #eb9486ff, #7e7f9aff, #97a7b3ff);
+- add headless ui vue into the project
+- create atoms folder under components and generate VButton component based on headless-ui button component
+  - make variantClass section more lean and maintainable
+  - don't split tailwind classes
 - 
