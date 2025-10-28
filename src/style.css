@@ -1,1 +1,189 @@
 @import "tailwindcss";
+
+/* Custom color palette variables */
+:root {
+  /* Tea Green Palette */
+  --tea-green: #cae7b9;
+  --tea-green-50: #f7fcf4;
+  --tea-green-100: #eef9e7;
+  --tea-green-200: #ddf3d1;
+  --tea-green-300: #c4e9b1;
+  --tea-green-400: #a6dd8b;
+  --tea-green-500: #cae7b9;
+  --tea-green-600: #8bc968;
+  --tea-green-700: #6ba54a;
+  --tea-green-800: #56853d;
+  --tea-green-900: #496f35;
+
+  /* Flax Palette */
+  --flax: #f3de8a;
+  --flax-50: #fefce8;
+  --flax-100: #fefbcb;
+  --flax-200: #fef599;
+  --flax-300: #feeb5b;
+  --flax-400: #f3de8a;
+  --flax-500: #edc82f;
+  --flax-600: #d9a81e;
+  --flax-700: #b67e1a;
+  --flax-800: #94621b;
+  --flax-900: #7b511c;
+
+  /* Coral Pink Palette */
+  --coral-pink: #eb9486;
+  --coral-pink-50: #fef6f5;
+  --coral-pink-100: #fdecea;
+  --coral-pink-200: #fbdddb;
+  --coral-pink-300: #f7c3bd;
+  --coral-pink-400: #f19d93;
+  --coral-pink-500: #eb9486;
+  --coral-pink-600: #d75c4a;
+  --coral-pink-700: #b64c3b;
+  --coral-pink-800: #964134;
+  --coral-pink-900: #7c3d31;
+
+  /* Cool Gray Palette */
+  --cool-gray: #7e7f9a;
+  --cool-gray-50: #f8f8fa;
+  --cool-gray-100: #f1f2f5;
+  --cool-gray-200: #e6e7ed;
+  --cool-gray-300: #d1d3dd;
+  --cool-gray-400: #b4b7c7;
+  --cool-gray-500: #7e7f9a;
+  --cool-gray-600: #716f8a;
+  --cool-gray-700: #615f77;
+  --cool-gray-800: #524f63;
+  --cool-gray-900: #454352;
+
+  /* Cadet Gray Palette */
+  --cadet-gray: #97a7b3;
+  --cadet-gray-50: #f6f8fa;
+  --cadet-gray-100: #edf1f4;
+  --cadet-gray-200: #d7e0e6;
+  --cadet-gray-300: #b5c8d1;
+  --cadet-gray-400: #8da6b6;
+  --cadet-gray-500: #97a7b3;
+  --cadet-gray-600: #5e798a;
+  --cadet-gray-700: #4e6470;
+  --cadet-gray-800: #44535d;
+  --cadet-gray-900: #3d464f;
+}
+
+@theme {
+  --color-tea-green-50: #f7fcf4;
+  --color-tea-green-100: #eef9e7;
+  --color-tea-green-200: #ddf3d1;
+  --color-tea-green-300: #c4e9b1;
+  --color-tea-green-400: #a6dd8b;
+  --color-tea-green-500: #cae7b9;
+  --color-tea-green-600: #8bc968;
+  --color-tea-green-700: #6ba54a;
+  --color-tea-green-800: #56853d;
+  --color-tea-green-900: #496f35;
+  --color-tea-green-950: #243d1a;
+
+  --color-flax-50: #fefce8;
+  --color-flax-100: #fefbcb;
+  --color-flax-200: #fef599;
+  --color-flax-300: #feeb5b;
+  --color-flax-400: #f3de8a;
+  --color-flax-500: #edc82f;
+  --color-flax-600: #d9a81e;
+  --color-flax-700: #b67e1a;
+  --color-flax-800: #94621b;
+  --color-flax-900: #7b511c;
+  --color-flax-950: #472c0d;
+
+  --color-coral-pink-50: #fef6f5;
+  --color-coral-pink-100: #fdecea;
+  --color-coral-pink-200: #fbdddb;
+  --color-coral-pink-300: #f7c3bd;
+  --color-coral-pink-400: #f19d93;
+  --color-coral-pink-500: #eb9486;
+  --color-coral-pink-600: #d75c4a;
+  --color-coral-pink-700: #b64c3b;
+  --color-coral-pink-800: #964134;
+  --color-coral-pink-900: #7c3d31;
+  --color-coral-pink-950: #431c17;
+
+  --color-cool-gray-50: #f8f8fa;
+  --color-cool-gray-100: #f1f2f5;
+  --color-cool-gray-200: #e6e7ed;
+  --color-cool-gray-300: #d1d3dd;
+  --color-cool-gray-400: #b4b7c7;
+  --color-cool-gray-500: #7e7f9a;
+  --color-cool-gray-600: #716f8a;
+  --color-cool-gray-700: #615f77;
+  --color-cool-gray-800: #524f63;
+  --color-cool-gray-900: #454352;
+  --color-cool-gray-950: #2d2b35;
+
+  --color-cadet-gray-50: #f6f8fa;
+  --color-cadet-gray-100: #edf1f4;
+  --color-cadet-gray-200: #d7e0e6;
+  --color-cadet-gray-300: #b5c8d1;
+  --color-cadet-gray-400: #8da6b6;
+  --color-cadet-gray-500: #97a7b3;
+  --color-cadet-gray-600: #5e798a;
+  --color-cadet-gray-700: #4e6470;
+  --color-cadet-gray-800: #44535d;
+  --color-cadet-gray-900: #3d464f;
+  --color-cadet-gray-950: #272e33;
+
+  /* Primary theme mapping to tea-green */
+  --color-primary-50: var(--color-tea-green-50);
+  --color-primary-100: var(--color-tea-green-100);
+  --color-primary-200: var(--color-tea-green-200);
+  --color-primary-300: var(--color-tea-green-300);
+  --color-primary-400: var(--color-tea-green-400);
+  --color-primary-500: var(--color-tea-green-500);
+  --color-primary-600: var(--color-tea-green-600);
+  --color-primary-700: var(--color-tea-green-700);
+  --color-primary-800: var(--color-tea-green-800);
+  --color-primary-900: var(--color-tea-green-900);
+  --color-primary-950: var(--color-tea-green-950);
+
+  /* Secondary theme mapping to flax */
+  --color-secondary-50: var(--color-flax-50);
+  --color-secondary-100: var(--color-flax-100);
+  --color-secondary-200: var(--color-flax-200);
+  --color-secondary-300: var(--color-flax-300);
+  --color-secondary-400: var(--color-flax-400);
+  --color-secondary-500: var(--color-flax-500);
+  --color-secondary-600: var(--color-flax-600);
+  --color-secondary-700: var(--color-flax-700);
+  --color-secondary-800: var(--color-flax-800);
+  --color-secondary-900: var(--color-flax-900);
+  --color-secondary-950: var(--color-flax-950);
+
+  /* Accent theme mapping to coral-pink */
+  --color-accent-50: var(--color-coral-pink-50);
+  --color-accent-100: var(--color-coral-pink-100);
+  --color-accent-200: var(--color-coral-pink-200);
+  --color-accent-300: var(--color-coral-pink-300);
+  --color-accent-400: var(--color-coral-pink-400);
+  --color-accent-500: var(--color-coral-pink-500);
+  --color-accent-600: var(--color-coral-pink-600);
+  --color-accent-700: var(--color-coral-pink-700);
+  --color-accent-800: var(--color-coral-pink-800);
+  --color-accent-900: var(--color-coral-pink-900);
+  --color-accent-950: var(--color-coral-pink-950);
+}
+
+/* Utility classes for your custom colors */
+.bg-tea-green { background-color: var(--tea-green); }
+.bg-flax { background-color: var(--flax); }
+.bg-coral-pink { background-color: var(--coral-pink); }
+.bg-cool-gray { background-color: var(--cool-gray); }
+.bg-cadet-gray { background-color: var(--cadet-gray); }
+
+.text-tea-green { color: var(--tea-green); }
+.text-flax { color: var(--flax); }
+.text-coral-pink { color: var(--coral-pink); }
+.text-cool-gray { color: var(--cool-gray); }
+.text-cadet-gray { color: var(--cadet-gray); }
+
+.border-tea-green { border-color: var(--tea-green); }
+.border-flax { border-color: var(--flax); }
+.border-coral-pink { border-color: var(--coral-pink); }
+.border-cool-gray { border-color: var(--cool-gray); }
+.border-cadet-gray { border-color: var(--cadet-gray); }
