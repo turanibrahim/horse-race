@@ -120,17 +120,11 @@ onBeforeUnmount(() => {
         >
           <v-horse
             :color="horse.color"
-            :number="horse.id"
             :is-running="isHorseRunning(horse.id)"
           />
         </div>
-        <div class="absolute -left-[120px] flex flex-col gap-0.5 bg-white/95 p-1 px-2 rounded shadow-[0_2px_4px_rgba(0,0,0,0.2)] min-w-[110px] md:-left-[100px] md:min-w-[90px]">
-          <span class="font-semibold text-xs text-cool-gray-800 whitespace-nowrap md:text-[0.675rem]">
-            {{ horse.name }}
-          </span>
-          <span class="text-[0.625rem] text-cool-gray-600 font-medium md:text-[0.575rem]">
-            {{ horse.conditionScore }}
-          </span>
+        <div class="absolute left-2 text-white font-semibold text-sm opacity-50">
+          {{ horse.name }}
         </div>
       </div>
     </div>

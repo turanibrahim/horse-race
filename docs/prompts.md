@@ -149,3 +149,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - Only first horse running on the race right now find the issue and fix it
 - Calculate track length dynamically, update horse position based on that. Race length should track length - horse length(50px)
   - Animation should stop when horse finish the race
+- instead of id show horse name beggining of the race tract. Delete id from top of the horse. Opacity should 0.5 for the name
