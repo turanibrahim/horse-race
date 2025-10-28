@@ -83,4 +83,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - create theme page under pages folder.
   - move everything under app to that theme page
   - pages will have [page-name].page.vue convention
-- 
+- Generate v-table component under atoms folder
