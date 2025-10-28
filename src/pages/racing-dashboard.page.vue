@@ -96,31 +96,35 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="racing-dashboard">
+  <div class="p-8 max-w-[1400px] mx-auto">
     <racing-dashboard-header 
       @click:horse-list="handleOpenHorseList"
       @click:generate-program="handleGenerateProgram"
       @click:start-pause-race="handleStartPauseRace"
     />
     
-    <header class="dashboard-header">
-      <h1>Racing Dashboard</h1>
-      <p>Welcome to the Horse Racing Management System</p>
+    <header class="mb-12">
+      <h1 class="text-[2.5rem] font-bold mb-2">
+        Racing Dashboard
+      </h1>
+      <p class="text-lg text-cool-gray-500">
+        Welcome to the Horse Racing Management System
+      </p>
     </header>
 
-    <div v-if="isLoading" class="loading-state">
+    <div v-if="isLoading" class="flex justify-center items-center min-h-[400px]">
       <p>Loading dashboard...</p>
     </div>
 
-    <div v-else class="dashboard-content">
-      <div v-if="sessionOptions.length === 0" class="no-sessions-message">
+    <div v-else class="flex flex-col gap-8">
+      <div v-if="sessionOptions.length === 0" class="py-16 px-8 bg-cool-gray-50 rounded-lg border-2 border-dashed border-cool-gray-200">
         <p class="text-cool-gray-600 text-center text-lg">
           No sessions available. Click "Generate Program" to create sessions.
         </p>
       </div>
 
-      <div v-else class="sessions-container">
-        <div v-if="activeRaceHorses.length > 0" class="race-content">
+      <div v-else class="flex flex-col gap-6">
+        <div v-if="activeRaceHorses.length > 0" class="flex flex-col gap-8 mb-8">
           <race-track 
             :horses="activeRaceHorses"
             :distance="activeRaceDistance"
@@ -130,14 +134,14 @@ onMounted(async () => {
           />
         </div>
 
-        <div v-else class="race-warning">
+        <div v-else class="p-8 bg-amber-50 rounded-lg border-2 border-amber-400 mb-6">
           <p class="text-amber-700 text-center text-lg font-medium">
             ⚠️ Click "Start Race" to begin watching races on the track
           </p>
         </div>
 
         <template v-if="currentSessionHorses.length > 0">
-          <div class="session-selector">
+          <div class="bg-white p-6 rounded-lg border border-cool-gray-200">
             <label class="block text-sm font-medium text-cool-gray-700 mb-2">
               Select Session
             </label>
@@ -149,7 +153,7 @@ onMounted(async () => {
               class="max-w-md"
             />
           </div>
-          <div class="tables-grid">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <session-horses-table
               :horses="currentSessionHorses"
               :session-name="currentSessionName"
@@ -167,86 +171,3 @@ onMounted(async () => {
     <horse-list-drawer v-model="isHorseListDrawerOpen" />
   </div>
 </template>
-
-<style>
-.racing-dashboard {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.dashboard-header {
-  margin-bottom: 3rem;
-}
-
-.dashboard-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.dashboard-header p {
-  font-size: 1.125rem;
-  color: #6b7280;
-}
-
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-}
-
-.dashboard-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.no-sessions-message {
-  padding: 4rem 2rem;
-  background-color: #f9fafb;
-  border-radius: 0.5rem;
-  border: 2px dashed #e5e7eb;
-}
-
-.sessions-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.session-selector {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-}
-
-.race-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.race-warning {
-  padding: 2rem;
-  background-color: #fffbeb;
-  border-radius: 0.5rem;
-  border: 2px solid #fbbf24;
-  margin-bottom: 1.5rem;
-}
-
-.tables-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-@media (max-width: 1024px) {
-  .tables-grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>

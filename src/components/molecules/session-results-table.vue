@@ -24,14 +24,14 @@ const hasResults = computed(() => props.results.length > 0);
 </script>
 
 <template>
-  <div class="session-results-table">
+  <div class="bg-white rounded-lg p-6 border border-cool-gray-200">
     <div class="mb-4">
       <h3 class="text-xl font-semibold text-cool-gray-900">
         {{ sessionName }} - Results
       </h3>
     </div>
 
-    <div v-if="!hasResults" class="no-results">
+    <div v-if="!hasResults" class="p-12 px-4 bg-cool-gray-50 rounded-lg border-2 border-dashed border-cool-gray-200">
       <p class="text-cool-gray-500 text-center italic">
         No results yet. Start the race to see results.
       </p>
@@ -66,19 +66,3 @@ const hasResults = computed(() => props.results.length > 0);
     </v-table>
   </div>
 </template>
-
-<style>
-.session-results-table {
-  background-color: white;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-}
-
-.no-results {
-  padding: 3rem 1rem;
-  background-color: #f9fafb;
-  border-radius: 0.5rem;
-  border: 2px dashed #e5e7eb;
-}
-</style>

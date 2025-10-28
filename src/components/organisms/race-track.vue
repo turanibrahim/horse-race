@@ -38,58 +38,59 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="race-track-container">
-    <div class="race-info">
+  <div class="bg-white rounded-lg border border-cool-gray-200 p-6 mb-8">
+    <div class="flex justify-between items-center mb-6">
       <h3 class="text-xl font-bold text-cool-gray-800">
         Race Distance: {{ distance }}m
       </h3>
-      <div class="race-status">
+      <div class="flex items-center">
         <span
           v-if="isCompleted"
-          class="status-badge completed"
+          class="px-3 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wide bg-indigo-100 text-indigo-700"
         >
           Completed
         </span>
         <span
           v-else-if="isRunning && !isPaused"
-          class="status-badge running"
+          class="px-3 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wide bg-green-100 text-green-700 animate-pulse-opacity"
         >
           Running
         </span>
         <span
           v-else-if="isPaused"
-          class="status-badge paused"
+          class="px-3 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wide bg-amber-100 text-amber-800"
         >
           Paused
         </span>
         <span
           v-else
-          class="status-badge ready"
+          class="px-3 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wide bg-blue-100 text-blue-800"
         >
           Ready
         </span>
       </div>
     </div>
 
-    <div class="race-track">
-      <div class="track-background">
+    <div class="relative w-full bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg overflow-hidden h-[500px]">
+      <div class="absolute inset-0 flex flex-col">
         <div
           v-for="i in 10"
           :key="i"
-          class="track-lane"
+          class="flex-1 border-b-2 border-white/20"
+          :class="i % 2 === 0 ? 'bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-white/[0.08]' : 'bg-gradient-to-r from-white/[0.05] via-white/[0.02] to-white/[0.05]'"
         />
       </div>
 
-      <div class="finish-line" />
+      <div class="absolute right-[2%] top-0 bottom-0 w-1 bg-[repeating-linear-gradient(45deg,#ffffff,#ffffff_10px,#000000_10px,#000000_20px)] shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
 
       <div
         v-for="(horse, index) in stableLaneAssignment"
         :key="horse.id"
-        class="horse-lane"
+        class="absolute left-[2%] right-[2%] h-[10%] flex items-center transition-[top] duration-300"
         :style="{ top: `${index * 10}%` }"
       >
         <div
-          class="horse-wrapper"
+          class="absolute transition-[left] duration-100 z-10"
           :style="{
             left: `${raceStore.horsePositions.get(horse.id) || 0}%`,
           }"
@@ -100,183 +101,15 @@ onUnmounted(() => {
             :is-running="isRunning && !isPaused && !isCompleted"
           />
         </div>
-        <div class="horse-info">
-          <span class="horse-name">{{ horse.name }}</span>
-          <span class="horse-condition">{{ horse.conditionScore }}</span>
+        <div class="absolute -left-[120px] flex flex-col gap-0.5 bg-white/95 p-1 px-2 rounded shadow-[0_2px_4px_rgba(0,0,0,0.2)] min-w-[110px] md:-left-[100px] md:min-w-[90px]">
+          <span class="font-semibold text-xs text-cool-gray-800 whitespace-nowrap md:text-[0.675rem]">
+            {{ horse.name }}
+          </span>
+          <span class="text-[0.625rem] text-cool-gray-600 font-medium md:text-[0.575rem]">
+            {{ horse.conditionScore }}
+          </span>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style>
-.race-track-container {
-  background: white;
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.race-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.race-status {
-  display: flex;
-  align-items: center;
-}
-
-.status-badge {
-  padding: 0.375rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-}
-
-.status-badge.ready {
-  background-color: #dbeafe;
-  color: #1e40af;
-}
-
-.status-badge.running {
-  background-color: #dcfce7;
-  color: #166534;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.status-badge.paused {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.status-badge.completed {
-  background-color: #e0e7ff;
-  color: #4338ca;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.race-track {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.track-background {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.track-lane {
-  flex: 1;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.05) 0%, 
-    rgba(255, 255, 255, 0.02) 50%, 
-    rgba(255, 255, 255, 0.05) 100%
-  );
-}
-
-.track-lane:nth-child(even) {
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.08) 0%, 
-    rgba(255, 255, 255, 0.04) 50%, 
-    rgba(255, 255, 255, 0.08) 100%
-  );
-}
-
-.finish-line {
-  position: absolute;
-  right: 2%;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: repeating-linear-gradient(
-    45deg,
-    #ffffff,
-    #ffffff 10px,
-    #000000 10px,
-    #000000 20px
-  );
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.horse-lane {
-  position: absolute;
-  left: 2%;
-  right: 2%;
-  height: 10%;
-  display: flex;
-  align-items: center;
-  transition: top 0.3s ease;
-}
-
-.horse-wrapper {
-  position: absolute;
-  transition: left 0.1s linear;
-  z-index: 10;
-}
-
-.horse-info {
-  position: absolute;
-  left: -120px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  min-width: 110px;
-}
-
-.horse-name {
-  font-weight: 600;
-  font-size: 0.75rem;
-  color: #1f2937;
-  white-space: nowrap;
-}
-
-.horse-condition {
-  font-size: 0.625rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-@media (max-width: 768px) {
-  .race-track {
-    height: 400px;
-  }
-
-  .horse-info {
-    left: -100px;
-    min-width: 90px;
-  }
-
-  .horse-name {
-    font-size: 0.675rem;
-  }
-
-  .horse-condition {
-    font-size: 0.575rem;
-  }
-}
-</style>

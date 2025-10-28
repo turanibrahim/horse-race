@@ -11,7 +11,7 @@ const props = defineProps<SessionHorsesTableProps>();
 </script>
 
 <template>
-  <div class="session-horses-table">
+  <div class="bg-white rounded-lg p-6 border border-cool-gray-200">
     <div class="mb-4">
       <h3 class="text-xl font-semibold text-cool-gray-900">
         {{ sessionName }} - Horses
@@ -22,11 +22,3 @@ const props = defineProps<SessionHorsesTableProps>();
   </div>
 </template>
 
-<style>
-.session-horses-table {
-  background-color: white;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-}
-</style>

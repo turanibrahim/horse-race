@@ -187,3 +187,40 @@
 .border-coral-pink { border-color: var(--coral-pink); }
 .border-cool-gray { border-color: var(--cool-gray); }
 .border-cadet-gray { border-color: var(--cadet-gray); }
+
+/* Custom animations */
+@keyframes gallop-bounce {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  25% {
+    transform: translateY(-3px) scaleY(0.98);
+  }
+  50% {
+    transform: translateY(-5px) scaleY(0.96);
+  }
+  75% {
+    transform: translateY(-3px) scaleY(0.98);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.animate-gallop-bounce {
+  animation: gallop-bounce 0.3s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes pulse-opacity {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-opacity {
+  animation: pulse-opacity 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
