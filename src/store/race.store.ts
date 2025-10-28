@@ -17,6 +17,8 @@ const initializeRaces = (allHorses: Horse[]): Race[] => {
     horses: selectRandomHorses(allHorses, 10),
     results: [],
     isCompleted: false,
+    isRunning: false,
+    isPaused: false,
   }));
 };
 
@@ -60,6 +62,8 @@ export const useRaceStore = defineStore('race', () => {
 
     race.results = results;
     race.isCompleted = true;
+    race.isRunning = false;
+    race.isPaused = false;
 
     return results;
   };
@@ -86,6 +90,53 @@ export const useRaceStore = defineStore('race', () => {
     return races.value[round - 1];
   };
 
+  const startRace = (round: number): void => {
+    const race = races.value[round - 1];
+    
+    if (!race) {
+      throw new Error(`Race round ${round} not found`);
+    }
+
+    if (race.isCompleted) {
+      throw new Error(`Race round ${round} has already been completed`);
+    }
+
+    race.isRunning = true;
+    race.isPaused = false;
+  };
+
+  const pauseRace = (round: number): void => {
+    const race = races.value[round - 1];
+    
+    if (!race) {
+      throw new Error(`Race round ${round} not found`);
+    }
+
+    if (!race.isRunning) {
+      throw new Error(`Race round ${round} is not running`);
+    }
+
+    if (race.isCompleted) {
+      throw new Error(`Race round ${round} has already been completed`);
+    }
+
+    race.isPaused = true;
+  };
+
+  const resumeRace = (round: number): void => {
+    const race = races.value[round - 1];
+    
+    if (!race) {
+      throw new Error(`Race round ${round} not found`);
+    }
+
+    if (!race.isRunning) {
+      throw new Error(`Race round ${round} is not running`);
+    }
+
+    race.isPaused = false;
+  };
+
   return {
     races,
     currentRound,
@@ -94,5 +145,8 @@ export const useRaceStore = defineStore('race', () => {
     resetRaces,
     getRaceResults,
     getRace,
+    startRace,
+    pauseRace,
+    resumeRace,
   };
 });

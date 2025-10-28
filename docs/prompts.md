@@ -88,3 +88,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - i want to use latest eslint version do config based on that
   - run lit and fix all the issues
   - Make theme page theme-preview.page.vue instead
+- add start/pause ability to races. User will be able pause races

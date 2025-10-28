@@ -18,4 +18,6 @@ export interface Race {
   horses: Horse[];
   results: RaceResult[];
   isCompleted: boolean;
+  isRunning: boolean;
+  isPaused: boolean;
 }
