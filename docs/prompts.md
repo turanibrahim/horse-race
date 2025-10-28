@@ -55,4 +55,6 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - create atoms folder under components and generate VButton component based on headless-ui button component
   - make variantClass section more lean and maintainable
   - don't split tailwind classes
-- 
+- add pinia to project
+  - update the store based on the prompt file
+  - just init the stores and make config don't create any store or types yet
