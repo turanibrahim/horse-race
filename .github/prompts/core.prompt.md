@@ -1,0 +1,21 @@
+---
+mode: agent
+---
+- plugins will be under src/plugins/ folder. When you need to initialize vue plugins like vue-router or vue-i18n, do it in the src/plugins/ folder and import them in main.ts file.
+- components will be under src/components/ folder. We will use atomic component design pattern. So we will have atoms, molecules, organisms, templates folders under src/components/ folder.
+- store will be under src/store/ folder. We will use pinia as state management library.
+- types will be under src/types/ folder. All typescript types and interfaces will be defined here.
+- use ts best practices and patterns.
+- use vue3 best practices and patterns.
+- use composition api.
+- use script setup syntax.
+- section order will be script, template, style.
+- don't use scoped styles unless necessary.
+- use tailwind 4 for styling.
+- use encapsulation and reusability principles.
+- make sure code is clean and well formatted.
+- use function composition simple atomic well defined and named functions.
+- don't use any comment code should explain itself.
+- make sure code is well structured and organized.
+- fix any errors, eslint issues.
+- use conventional commit messages.
