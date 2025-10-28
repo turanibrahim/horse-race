@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const TRACK_LENGTH = 100;
-const BASE_SPEED = 0.5;
+const BASE_SPEED = 1.5;
 const horsePositions = ref<Map<number, number>>(new Map());
 const startTime = ref<number>(0);
 const pausedTime = ref<number>(0);
@@ -30,21 +30,15 @@ const horseFinishTimes = ref<Map<number, number>>(new Map());
 const horseSpeedFactors = computed(() => {
   const factors = new Map<number, number>();
   props.horses.forEach(horse => {
-    const baseVariation = 0.8 + Math.random() * 0.4;
+    const baseVariation = 0.85 + Math.random() * 0.3;
     const conditionFactor = horse.conditionScore / 100;
-    const speedFactor = baseVariation * (0.7 + conditionFactor * 0.6);
+    const speedFactor = baseVariation * (0.8 + conditionFactor * 0.4);
     factors.set(horse.id, speedFactor);
   });
   return factors;
 });
 
-const sortedHorses = computed(() => {
-  return [...props.horses].sort((a, b) => {
-    const posA = horsePositions.value.get(a.id) || 0;
-    const posB = horsePositions.value.get(b.id) || 0;
-    return posB - posA;
-  });
-});
+const stableLaneAssignment = ref<Horse[]>([]);
 
 const initializeRace = () => {
   horsePositions.value.clear();
@@ -56,6 +50,10 @@ const initializeRace = () => {
   startTime.value = 0;
   pausedTime.value = 0;
   totalPausedDuration.value = 0;
+  
+  if (stableLaneAssignment.value.length === 0) {
+    stableLaneAssignment.value = [...props.horses];
+  }
 };
 
 const animate = (timestamp: number) => {
@@ -135,6 +133,7 @@ watch(() => props.isRunning, (running) => {
 
 watch(() => props.horses, () => {
   initializeRace();
+  stableLaneAssignment.value = [...props.horses];
 }, { immediate: true });
 
 onUnmounted(() => {
@@ -190,7 +189,7 @@ onUnmounted(() => {
       <div class="finish-line" />
 
       <div
-        v-for="(horse, index) in sortedHorses"
+        v-for="(horse, index) in stableLaneAssignment"
         :key="horse.id"
         class="horse-lane"
         :style="{ top: `${index * 10}%` }"
