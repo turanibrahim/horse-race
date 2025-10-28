@@ -115,4 +115,9 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - I want to see actual race on the dashboard when user click to start/pause race button race should happen on the dashboard
   - Horse positions on the track component changes during the race it shouldn't happen fix that
     - Sessions are too long shorten them little bit
-  - 
+  - I want to have real horse animation on the track
+    - Find horse svg on the internet animate that
+    - use this [horse.svg]
+    - horse size should be little bit small
+    - little bit more small
+- 

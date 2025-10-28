@@ -2,6 +2,7 @@
 /* eslint-env browser */
 import { computed, onUnmounted, ref, watch } from 'vue';
 import type { Horse } from '@/types';
+import VHorse from '@/components/atoms/v-horse.vue';
 
 interface Props {
   horses: Horse[];
@@ -195,13 +196,16 @@ onUnmounted(() => {
         :style="{ top: `${index * 10}%` }"
       >
         <div
-          class="horse"
+          class="horse-wrapper"
           :style="{
             left: `${horsePositions.get(horse.id) || 0}%`,
-            backgroundColor: horse.color,
           }"
         >
-          <span class="horse-number">{{ horse.id }}</span>
+          <v-horse
+            :color="horse.color"
+            :number="horse.id"
+            :is-running="isRunning && !isPaused && !isCompleted"
+          />
         </div>
         <div class="horse-info">
           <span class="horse-name">{{ horse.name }}</span>
@@ -332,25 +336,10 @@ onUnmounted(() => {
   transition: top 0.3s ease;
 }
 
-.horse {
+.horse-wrapper {
   position: absolute;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: left 0.1s linear;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  border: 3px solid rgba(255, 255, 255, 0.8);
   z-index: 10;
-}
-
-.horse-number {
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .horse-info {
@@ -382,15 +371,6 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .race-track {
     height: 400px;
-  }
-
-  .horse {
-    width: 32px;
-    height: 32px;
-  }
-
-  .horse-number {
-    font-size: 0.875rem;
   }
 
   .horse-info {
