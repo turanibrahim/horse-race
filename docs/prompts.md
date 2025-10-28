@@ -64,3 +64,16 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - create generateHorse function and create horse inside of it
   - use arrow functions
 - update files names inside project based on prompt
+- Create race store. We will have 6 session of races. Every race will have 10 random horses. Every race have different lengths.
+
+  ○ Round 1: 1200 meters
+  ○ Round 2: 1400 meters
+  ○ Round 3: 1600 meters
+  ○ Round 4: 1800 meters
+  ○ Round 5: 2000 meters
+  ○ Round 6: 2200 meters
+
+  I will have list of result for every race. You will have function that runs every race and horses compete each other on this function.
+  - uses horses we generated inside horse store. Don't create new horses on here
+  - Horse store have 20 horses you need to choose 10 random horses among them
+  - delete comments code should explain itself update code based on that

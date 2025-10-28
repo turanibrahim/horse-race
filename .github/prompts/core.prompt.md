@@ -26,3 +26,4 @@ mode: agent
 - don't create unit test until I say so.
 - create component, logic and functions testable.
 - always use arrow functions.
+- always use alias import paths.
