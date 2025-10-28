@@ -108,16 +108,18 @@ This document contains a list of prompts used for various tasks. Prompt list wil
     - use condition score as a number
     - put drawer on the left of the screen
     ```
-  - Create select component under atoms, use headless ui
-  - when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
-    - With session I mean races, update the logic based on that. Currently we create races on init but we need to that on user click
-  - when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
-  - I want to see actual race on the dashboard when user click to start/pause race button race should happen on the dashboard
-  - Horse positions on the track component changes during the race it shouldn't happen fix that
-    - Sessions are too long shorten them little bit
-  - I want to have real horse animation on the track
-    - Find horse svg on the internet animate that
-    - use this [horse.svg]
-    - horse size should be little bit small
-    - little bit more small
-- 
+- Create select component under atoms, use headless ui
+- when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
+  - With session I mean races, update the logic based on that. Currently we create races on init but we need to that on user click
+- when user click generate program button it should generate all necessary sessions on the race store. We will have session list on the dashboard page. Use select to choose session. Put session horse list and condition score table under of it. When I choose session on the select box it should show that session on the table
+- I want to see actual race on the dashboard when user click to start/pause race button race should happen on the dashboard
+- Horse positions on the track component changes during the race it shouldn't happen fix that
+  - Sessions are too long shorten them little bit
+- I want to have real horse animation on the track
+  - Find horse svg on the internet animate that
+  - use this [horse.svg]
+  - horse size should be little bit small
+  - little bit more small
+- horse list table and session horses table should be identical. Make it horse-table and use it both
+  - horse table should be molecule instead of organism
+  - session results and racing-dashboard-header also molecule

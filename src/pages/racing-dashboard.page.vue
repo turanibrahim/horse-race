@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import RacingDashboardHeader from '@/components/organisms/racing-dashboard-header.vue';
+import RacingDashboardHeader from '@/components/molecules/racing-dashboard-header.vue';
 import HorseListDrawer from '@/components/organisms/horse-list-drawer.vue';
 import SessionHorsesTable from '@/components/organisms/session-horses-table.vue';
-import SessionResultsTable from '@/components/organisms/session-results-table.vue';
+import SessionResultsTable from '@/components/molecules/session-results-table.vue';
 import RaceTrack from '@/components/organisms/race-track.vue';
 import VSelect, { type SelectOption } from '@/components/atoms/v-select.vue';
 import { useRaceStore } from '@/store/race.store';

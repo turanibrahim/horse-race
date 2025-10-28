@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import VDrawer from '@/components/atoms/v-drawer.vue';
-import HorsesTable from '@/components/organisms/horses-table.vue';
+import HorseTable from '@/components/molecules/horse-table.vue';
 import VButton from '@/components/atoms/v-button.vue';
 import { useHorseStore } from '@/store/horse.store';
 import { computed } from 'vue';
@@ -69,7 +69,7 @@ const handleClose = () => {
         </p>
       </div>
 
-      <horses-table :horses="horseStore.horses" />
+      <horse-table :horses="horseStore.horses" />
     </div>
 
     <template #footer>
