@@ -92,3 +92,5 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - Generate v-drawer component under atoms folder
 - create a page named racing-dashboard under pages. It will ba maing page
   - update router config racing-dashboard will be main page theme will be under theme route
+- add header to racing dashboard page. This header will have 3 buttons one one the left named Horse List, two button on the right named Generate Program and Start Pause Race
+  - use v-button and tailwind classes on the header component

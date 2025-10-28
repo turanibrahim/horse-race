@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import RacingDashboardHeader from '@/components/organisms/racing-dashboard-header.vue';
 
 const isLoading = ref(true);
 
@@ -14,6 +15,8 @@ onMounted(async () => {
 
 <template>
   <div class="racing-dashboard">
+    <racing-dashboard-header />
+    
     <header class="dashboard-header">
       <h1>Racing Dashboard</h1>
       <p>Welcome to the Horse Racing Management System</p>
