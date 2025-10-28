@@ -158,3 +158,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
 - add playwright and unit tests to project
 - Add correct test cases for e2e
   - first test case not working
+- Document this project under docs/ folder
