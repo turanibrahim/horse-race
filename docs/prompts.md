@@ -133,3 +133,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - Put warning for user that says you should start race to see race track
 - everything on the project should be tw 4 class don't use style section
 - race finish time should fixed to 2 digits
+- we don't need to do it here we can do this on the dashboard

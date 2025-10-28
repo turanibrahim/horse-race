@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUnmounted, watch } from 'vue';
+import { computed } from 'vue';
 import type { Horse } from '@/types';
 import VHorse from '@/components/atoms/v-horse.vue';
 import { useRaceStore } from '@/store/race.store';
@@ -17,24 +17,6 @@ const props = defineProps<Props>();
 const raceStore = useRaceStore();
 
 const stableLaneAssignment = computed(() => props.horses);
-
-watch(() => props.isRunning, (running) => {
-  if (running && !props.isCompleted) {
-    raceStore.startSession();
-  }
-});
-
-watch(() => props.isPaused, (paused) => {
-  if (paused) {
-    raceStore.pauseSession();
-  } else if (props.isRunning && !props.isCompleted) {
-    raceStore.resumeSession();
-  }
-});
-
-onUnmounted(() => {
-  raceStore.pauseSession();
-});
 </script>
 
 <template>
