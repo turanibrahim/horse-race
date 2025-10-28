@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import type { Horse, Race, RaceResult } from '@/types';
+import { computed, ref } from 'vue';
+import type { Horse, Race, RaceResult, Session } from '@/types';
 import { useHorseStore } from '@/store/horse.store';
 
 const RACE_DISTANCES = [1200, 1400, 1600, 1800, 2000, 2200];
@@ -24,8 +24,45 @@ const initializeRaces = (allHorses: Horse[]): Race[] => {
 
 export const useRaceStore = defineStore('race', () => {
   const horseStore = useHorseStore();
-  const races = ref<Race[]>(initializeRaces(horseStore.horses));
+  const races = ref<Race[]>([]);
   const currentRound = ref<number>(1);
+  const sessions = ref<Session[]>([]);
+  const currentSessionId = ref<number | null>(null);
+
+  const currentSession = computed(() => 
+    sessions.value.find(s => s.id === currentSessionId.value),
+  );
+
+  const generateProgram = () => {
+    const newSessions: Session[] = [];
+
+    RACE_DISTANCES.forEach((distance, index) => {
+      const sessionId = sessions.value.length + index + 1;
+      const sessionHorses = selectRandomHorses(horseStore.horses, 10);
+      
+      newSessions.push({
+        id: sessionId,
+        name: `Race ${sessionId} - ${distance}m`,
+        distance,
+        horses: sessionHorses,
+        results: [],
+        isCompleted: false,
+        isRunning: false,
+        isPaused: false,
+        createdAt: new Date(),
+      });
+    });
+
+    sessions.value = [...sessions.value, ...newSessions];
+    
+    if (!currentSessionId.value && newSessions.length > 0) {
+      currentSessionId.value = newSessions[0]!.id;
+    }
+  };
+
+  const setCurrentSession = (sessionId: number) => {
+    currentSessionId.value = sessionId;
+  };
 
   const calculateFinishTime = (horse: Horse, distance: number): number => {
     const baseTime = distance / 100;
@@ -140,6 +177,11 @@ export const useRaceStore = defineStore('race', () => {
   return {
     races,
     currentRound,
+    sessions,
+    currentSessionId,
+    currentSession,
+    generateProgram,
+    setCurrentSession,
     runRace,
     runAllRaces,
     resetRaces,

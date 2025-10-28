@@ -21,3 +21,15 @@ export interface Race {
   isRunning: boolean;
   isPaused: boolean;
 }
+
+export interface Session {
+  id: number;
+  name: string;
+  distance: number;
+  horses: Horse[];
+  results: RaceResult[];
+  isCompleted: boolean;
+  isRunning: boolean;
+  isPaused: boolean;
+  createdAt: Date;
+}

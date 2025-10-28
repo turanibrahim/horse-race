@@ -108,4 +108,5 @@ This document contains a list of prompts used for various tasks. Prompt list wil
     - use condition score as a number
     - put drawer on the left of the screen
     ```
+  - Create select component under atoms, use headless ui
   - 

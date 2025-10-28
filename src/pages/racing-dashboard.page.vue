@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import RacingDashboardHeader from '@/components/organisms/racing-dashboard-header.vue';
 import HorseListDrawer from '@/components/organisms/horse-list-drawer.vue';
+import SessionHorsesTable from '@/components/organisms/session-horses-table.vue';
+import VSelect, { type SelectOption } from '@/components/atoms/v-select.vue';
+import { useRaceStore } from '@/store/race.store';
+
+const raceStore = useRaceStore();
 
 const isLoading = ref(true);
 const isHorseListDrawerOpen = ref(false);
@@ -9,6 +14,37 @@ const isHorseListDrawerOpen = ref(false);
 const handleOpenHorseList = () => {
   isHorseListDrawerOpen.value = true;
 };
+
+const handleGenerateProgram = () => {
+  raceStore.generateProgram();
+};
+
+const sessionOptions = computed<SelectOption<number>[]>(() =>
+  raceStore.sessions.map(session => ({
+    value: session.id,
+    label: session.name,
+  })),
+);
+
+const selectedSessionId = computed({
+  get: () => raceStore.currentSessionId ?? undefined,
+  set: (value: number | undefined) => {
+    if (value !== undefined) {
+      raceStore.setCurrentSession(value);
+    }
+  },
+});
+
+const currentSessionHorses = computed(() => {
+  const session = raceStore.currentSession;
+  if (!session) return [];
+  
+  return session.horses;
+});
+
+const currentSessionName = computed(() => 
+  raceStore.currentSession?.name || 'No Session Selected',
+);
 
 onMounted(async () => {
   try {
@@ -21,7 +57,10 @@ onMounted(async () => {
 
 <template>
   <div class="racing-dashboard">
-    <racing-dashboard-header @click:horse-list="handleOpenHorseList" />
+    <racing-dashboard-header 
+      @click:horse-list="handleOpenHorseList"
+      @click:generate-program="handleGenerateProgram"
+    />
     
     <header class="dashboard-header">
       <h1>Racing Dashboard</h1>
@@ -33,20 +72,32 @@ onMounted(async () => {
     </div>
 
     <div v-else class="dashboard-content">
-      <section class="dashboard-section">
-        <h2>Active Races</h2>
-        <p>Race information will appear here</p>
-      </section>
+      <div v-if="sessionOptions.length === 0" class="no-sessions-message">
+        <p class="text-cool-gray-600 text-center text-lg">
+          No sessions available. Click "Generate Program" to create sessions.
+        </p>
+      </div>
 
-      <section class="dashboard-section">
-        <h2>Horse Statistics</h2>
-        <p>Horse statistics will appear here</p>
-      </section>
+      <div v-else class="sessions-container">
+        <div class="session-selector mb-6">
+          <label class="block text-sm font-medium text-cool-gray-700 mb-2">
+            Select Session
+          </label>
+          <v-select
+            v-model="selectedSessionId"
+            :options="sessionOptions"
+            placeholder="Choose a session"
+            size="md"
+            class="max-w-md"
+          />
+        </div>
 
-      <section class="dashboard-section">
-        <h2>Recent Results</h2>
-        <p>Recent race results will appear here</p>
-      </section>
+        <session-horses-table
+          v-if="currentSessionHorses.length > 0"
+          :horses="currentSessionHorses"
+          :session-name="currentSessionName"
+        />
+      </div>
     </div>
 
     <horse-list-drawer v-model="isHorseListDrawerOpen" />
@@ -83,25 +134,28 @@ onMounted(async () => {
 }
 
 .dashboard-content {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.dashboard-section {
+.no-sessions-message {
+  padding: 4rem 2rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  border: 2px dashed #e5e7eb;
+}
+
+.sessions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.session-selector {
+  background-color: white;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  background-color: #f9fafb;
   border: 1px solid #e5e7eb;
-}
-
-.dashboard-section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.dashboard-section p {
-  color: #6b7280;
 }
 </style>
