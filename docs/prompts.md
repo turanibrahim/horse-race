@@ -89,3 +89,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - run lit and fix all the issues
   - Make theme page theme-preview.page.vue instead
 - add start/pause ability to races. User will be able pause races
+- Generate v-drawer component under atoms folder
