@@ -6,6 +6,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'racing-dashboard',
+      component: () => import('@/pages/racing-dashboard.page.vue'),
+    },
+    {
+      path: '/theme',
       name: 'theme',
       component: () => import('@/pages/theme-preview.page.vue'),
     },

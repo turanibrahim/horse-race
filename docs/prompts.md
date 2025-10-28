@@ -90,3 +90,5 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - Make theme page theme-preview.page.vue instead
 - add start/pause ability to races. User will be able pause races
 - Generate v-drawer component under atoms folder
+- create a page named racing-dashboard under pages. It will ba maing page
+  - update router config racing-dashboard will be main page theme will be under theme route
