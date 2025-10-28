@@ -17,7 +17,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
-        project: ['./tsconfig.app.json', './tsconfig.node.json'],
+        project: ['./tsconfig.app.json', './tsconfig.node.json', './tsconfig.e2e.json'],
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
       },
@@ -84,6 +84,9 @@ export default tseslint.config(
       '*.config.js',
       '*.config.ts',
       'public/**',
+      'coverage/**',
+      'test-results/**',
+      'playwright-report/**',
     ],
   },
 );

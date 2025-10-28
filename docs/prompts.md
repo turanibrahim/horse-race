@@ -155,3 +155,4 @@ This document contains a list of prompts used for various tasks. Prompt list wil
   - add unit test for pinia
   - create unit test for plugins
 - add coverage tools to project
+- add playwright and unit tests to project
